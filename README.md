@@ -84,11 +84,33 @@ RecruitPro/
    ```bash
    pip install -r requirements.txt
    ```
-4. Run the app:
+4. Run the app locally:
    ```bash
    python app.py
    ```
 5. Open `http://127.0.0.1:5000` in your browser.
+
+## Deploying the UI Live
+
+This project is a Flask web app, so GitHub alone only stores the code. To get a live UI, deploy it to a hosting service such as Render, Railway, or Heroku.
+
+### Render deployment (recommended)
+
+1. Create a free account at https://render.com.
+2. Connect your GitHub repository: `https://github.com/Monikavinothkumar/HRAPP`.
+3. Create a new Web Service and select the `main` branch.
+4. Use these settings:
+   - Build command: `pip install -r requirements.txt`
+   - Start command: `gunicorn app:app`
+5. After deployment, Render will provide a live URL where your UI is accessible.
+
+### If using Railway
+
+1. Create a free account at https://railway.app.
+2. Create a new project from GitHub and select this repo.
+3. Use the same build/start commands:
+   - `pip install -r requirements.txt`
+   - `gunicorn app:app`
 
 ## Default Users
 
