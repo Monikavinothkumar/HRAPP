@@ -1,4 +1,5 @@
 import os
+import functools
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
@@ -96,9 +97,12 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def login_required(route_function):
+    @functools.wraps(route_function)
     def wrapper(*args, **kwargs):
+        if not session.get('user_id'):
+            flash('Please log in to access this page.', 'warning')
+            return redirect(url_for('login'))
         return route_function(*args, **kwargs)
-    wrapper.__name__ = route_function.__name__
     return wrapper
 
 @app.route('/')
@@ -107,7 +111,18 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        user = User.query.filter_by(username=username, password=password).first()
+        if user:
+            session['user_id'] = user.id
+            session['username'] = user.username
+            session['role'] = user.role
+            flash('Logged in successfully.', 'success')
+            return redirect(url_for('dashboard'))
+        flash('Invalid username or password.', 'danger')
+    return render_template('login.html')
 
 @app.route('/logout')
 def logout():
