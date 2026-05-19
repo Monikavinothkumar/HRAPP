@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 gap-3 flex-column flex-md-row">
+    <div>
+        <h3>Job Portal Quick Access</h3>
+        <p class="text-muted mb-0">Open your preferred job boards with one click and save favorites.</p>
+    </div>
+    <form class="d-flex" method="GET" action="{{ url_for('portals') }}">
+        <input class="form-control me-2" name="search" placeholder="Search portals" value="{{ search }}">
+        <button class="btn btn-outline-secondary">Search</button>
+    </form>
+</div>
+
+<div class="row g-3">
+    {% for portal in portals %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card shadow-sm portal-card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h6>{{ portal.name }}</h6>
+                    <form method="POST" action="{{ url_for('portal_favorite') }}">
+                        <input type="hidden" name="portal_name" value="{{ portal.name }}">
+                        <input type="hidden" name="search" value="{{ search }}">
+                        <button type="submit" class="btn btn-sm btn-outline-{{ 'danger' if portal.name in favorites else 'primary' }}">
+                            {{ 'Remove' if portal.name in favorites else 'Favorite' }}
+                        </button>
+                    </form>
+                </div>
+                <p class="text-muted small">Open this portal in a new tab for easier candidate sourcing.</p>
+                <a href="{{ portal.url }}" target="_blank" class="stretched-link"></a>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-warning">No portals found. Please update your search.</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

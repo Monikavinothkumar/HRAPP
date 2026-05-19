@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex flex-column flex-lg-row gap-4">
+    <div class="row g-4 flex-fill">
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 dashboard-card border-start border-5 border-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6>Total Candidates</h6>
+                        <span class="badge bg-primary">HR</span>
+                    </div>
+                    <h2>{{ total_candidates }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 dashboard-card border-start border-5 border-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6>Interviews Scheduled</h6>
+                        <span class="badge bg-info">Schedule</span>
+                    </div>
+                    <h2>{{ interviews_scheduled }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 dashboard-card border-start border-5 border-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6>Selected Candidates</h6>
+                        <span class="badge bg-success">Success</span>
+                    </div>
+                    <h2>{{ selected_count }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-sm border-0 dashboard-card border-start border-5 border-danger">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6>Rejected Candidates</h6>
+                        <span class="badge bg-danger">Alerts</span>
+                    </div>
+                    <h2>{{ rejected_count }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card shadow-sm border-0 dashboard-card border-start border-5 border-warning">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6>Pending Follow-ups</h6>
+                        <h2>{{ pending_followups }}</h2>
+                    </div>
+                    <div class="text-end text-muted">
+                        <small>Monitor applicants still in process</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 row g-4">
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-white border-bottom">
+                <h6 class="mb-0">Monthly Hiring</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-white border-bottom">
+                <h6 class="mb-0">Status Breakdown</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-white border-bottom">
+                <h6 class="mb-0">Source-wise Candidates</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="sourceChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h5 class="card-title">Quick Job Portal Access</h5>
+            <div class="row g-3">
+                {% for portal in portal_links %}
+                    <div class="col-sm-6 col-md-4 col-xl-3">
+                        <a href="{{ portal.url }}" target="_blank" class="text-decoration-none">
+                            <div class="portal-card p-3 rounded-3 bg-white shadow-sm h-100">
+                                <span>{{ portal.name }}</span>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const monthlyData = {{ monthly_chart | tojson }};
+const sourceData = {{ source_stats | tojson }};
+const statusData = {{ status_stats | tojson }};
+</script>
+{% endblock %}

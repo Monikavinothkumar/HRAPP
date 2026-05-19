@@ -1,0 +1,115 @@
+:root {
+    --background: #f2f6fb;
+    --surface: #ffffff;
+    --surface-strong: #ffffff;
+    --text: #2c3e50;
+    --primary: #2f80ed;
+    --card-shadow: rgba(46, 61, 73, 0.12);
+}
+
+html[data-theme='dark'] {
+    --background: #121826;
+    --surface: #1c2330;
+    --surface-strong: #293041;
+    --text: #f2f5fb;
+    --primary: #66b2ff;
+    --card-shadow: rgba(0, 0, 0, 0.35);
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.wrapper {
+    overflow-x: hidden;
+}
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+}
+
+.main-content {
+    min-height: 100vh;
+}
+
+.dashboard-card, .portal-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover, .portal-card:hover {
+    transform: translateY(-3px);
+}
+
+.sidebar-brand {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 1rem;
+}
+
+.btn-outline-secondary, .btn-outline-secondary:hover {
+    color: var(--text);
+}
+
+.login-body {
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #2f80ed 0%, #56ccf2 100%);
+}
+
+.login-container {
+    width: min(480px, 95%);
+}
+
+.card {
+    background: var(--surface);
+}
+
+.table {
+    background: var(--surface);
+}
+
+.card-header,
+.card-body,
+.modal-content,
+.navbar,
+.form-control,
+.form-select {
+    background: var(--surface);
+    color: var(--text);
+}
+
+.alert {
+    background: var(--surface-strong);
+    color: var(--text);
+}
+
+@media (max-width: 991px) {
+    .sidebar {
+        position: fixed;
+        left: -100%;
+        z-index: 1000;
+        transition: left 0.25s ease;
+    }
+    .sidebar.active {
+        left: 0;
+    }
+    .main-content {
+        padding-top: 1rem;
+    }
+}

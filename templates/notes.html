@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 gap-3 flex-column flex-md-row">
+    <div>
+        <h3>Notes & Daily Tasks</h3>
+        <p class="text-muted mb-0">Capture recruiter notes and manage daily follow-ups.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5>To-do List</h5>
+                <form method="POST" class="mb-3">
+                    <div class="input-group">
+                        <input name="task_description" class="form-control" placeholder="Add new task" required>
+                        <button class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+                <ul class="list-group">
+                    {% for task in tasks %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <input class="form-check-input me-2" type="checkbox" {% if task.is_done %}checked{% endif %} onclick="window.location='{{ url_for('toggle_task', task_id=task.id) }}'">
+                                <span class="{{ 'text-decoration-line-through text-muted' if task.is_done else '' }}">{{ task.description }}</span>
+                            </div>
+                            <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item text-muted">No tasks added yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5>Recruiter Notes</h5>
+                <form method="POST" class="mb-3">
+                    <div class="mb-3">
+                        <input name="note_title" class="form-control" placeholder="Note title" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea name="note_content" rows="4" class="form-control" placeholder="Write details" required></textarea>
+                    </div>
+                    <button class="btn btn-primary">Save Note</button>
+                </form>
+                <div class="list-group">
+                    {% for note in notes %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">{{ note.title }}</h6>
+                                    <p class="mb-1 text-muted small">{{ note.created_at.strftime('%b %d, %Y %I:%M %p') }}</p>
+                                </div>
+                                <a href="{{ url_for('delete_note', note_id=note.id) }}" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </div>
+                            <p class="mb-0">{{ note.content }}</p>
+                        </div>
+                    {% else %}
+                        <div class="list-group-item text-muted">No notes available yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

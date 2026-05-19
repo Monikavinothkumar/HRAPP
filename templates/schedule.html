@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 gap-3 flex-column flex-md-row">
+    <div>
+        <h3>Interview Scheduler</h3>
+        <p class="text-muted mb-0">Plan interviews and share schedule details with candidates.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <form method="POST" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Candidate</label>
+                <select class="form-select" name="candidate_id" required>
+                    <option value="">Select Candidate</option>
+                    {% for candidate in candidates %}
+                        <option value="{{ candidate.id }}">{{ candidate.name }} - {{ candidate.position }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Interview Date</label>
+                <input type="date" name="interview_date" class="form-control" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Interview Time</label>
+                <input type="time" name="interview_time" class="form-control" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Mode</label>
+                <select class="form-select" name="interview_mode" required>
+                    <option>Online</option>
+                    <option>Offline</option>
+                </select>
+            </div>
+            <div class="col-md-12">
+                <label class="form-label">Notes</label>
+                <textarea name="notes" rows="2" class="form-control"></textarea>
+            </div>
+            <div class="col-12 d-grid">
+                <button class="btn btn-primary">Schedule Interview</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h5 class="mb-3">Upcoming Interviews</h5>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Mode</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for interview in interviews %}
+                        <tr>
+                            <td>{{ interview.candidate.name }}</td>
+                            <td>{{ interview.interview_date }}</td>
+                            <td>{{ interview.interview_time }}</td>
+                            <td>{{ interview.interview_mode }}</td>
+                            <td>{{ interview.notes }}</td>
+                            <td>
+                                <a href="{{ url_for('delete_schedule', interview_id=interview.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove interview?')">Delete</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="6" class="text-center text-muted">No interviews scheduled yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
