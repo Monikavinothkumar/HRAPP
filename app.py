@@ -12,13 +12,7 @@ ALLOWED_EXTENSIONS = {'pdf', 'doc', 'docx'}
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('RECRUITPRO_SECRET', 'recruitpro_secret_key')
-# Use DATABASE_URL (e.g. from Heroku) when available, otherwise fall back to local SQLite
-db_uri = os.environ.get('DATABASE_URL')
-if db_uri:
-    db_uri = db_uri.replace('postgres://', 'postgresql://', 1)
-else:
-    db_uri = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
