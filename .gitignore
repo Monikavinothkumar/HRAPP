@@ -1,4 +1,15 @@
 venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.sqlite3
+database.db
+static/uploads/
+.env
+.pytest_cache/
+.vscode/
+.DS_Storevenv/
 __pycache__/
 *.pyc
 instance/
